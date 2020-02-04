@@ -58,7 +58,7 @@ Once installed, running chajr is really this simple! The directory name you give
 
 ---
 
-## Details
+## Details 🔍
 
 ### What HTML 5 Boilerplate are you putting into my index.html file?
 
@@ -80,3 +80,7 @@ Once installed, running chajr is really this simple! The directory name you give
 ### Wow, why did you name your file x / why did you divide your files into directories like that / why did you defer JS execution? This is all terrible, this is truly unusable garbage!
 
 You're welcome to modify or distribute any part of this script! Adapt it for yourself, or your organization and make it you own.
+
+---
+
+# Pull up a chajr, get to work
