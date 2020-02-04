@@ -22,8 +22,8 @@ The script creates a directory in the working directory using the name passed in
         |---📄index.html (NEW!) 
         |     (Includes HTML boilerplate and links to main.css and main.js)
         |
-    	|---📄README.md (NEW!)
-    	|
+        |---📄README.md (NEW!)
+        |
         |---📁css (NEW!)
         |    \
         |     📄main.css (NEW!)(Empty)
