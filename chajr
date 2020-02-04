@@ -24,8 +24,6 @@ cat <<'EOF' > index.html
 </body>
 </html>
 EOF
-echo $WD
-echo $WD$1
 if [ -d $WD"/"$1 ]; then
   echo chajr built in the $1 directory.
   echo Dont\'t forget to cd into it before initializing a repo or opening in an editor.
