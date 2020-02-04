@@ -1,4 +1,4 @@
-#chajr 🪑
+# chajr 🪑
 
 chajr (pronounced chair) is a simple bash script for getting **C**ss, **H**tml, **A**nd **J**avascript **R**eady.
 
