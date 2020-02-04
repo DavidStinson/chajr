@@ -3,11 +3,11 @@
 # This script builds a simple local environment to develop JS, HTML, and CSS.
 # Please feel free to distribute it and change it to suit your needs.
 # Let's all stop wasting time setting up file structures!
-
+WD=$(pwd)
 mkdir $1
 cd $1
 mkdir css js images
-touch css/main.css js/main.js
+touch css/main.css js/main.js README.md
 cat <<'EOF' > index.html
 <!DOCTYPE html>
 <html lang="en">
@@ -24,3 +24,12 @@ cat <<'EOF' > index.html
 </body>
 </html>
 EOF
+echo $WD
+echo $WD$1
+if [ -d $WD"/"$1 ]; then
+  echo chajr built in the $1 directory.
+  echo Dont\'t forget to cd into it before initializing a repo or opening in an editor.
+else
+  echo Oh no, something went wrong.
+  echo Make sure you have write permissions in the current working directory.
+fi
