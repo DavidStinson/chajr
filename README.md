@@ -6,7 +6,7 @@ chajr (pronounced chair) is a simple bash script for getting **C**ss, **H**tml, 
 
 ## What chajr does 🛠
 
-The script creates a directory in the working directory using the name passed into it as an argument. Inside this directory it creates 3 directories - `css` containing an empty `main.css` file, `js` containing an empty `main.js` file, and an empty `images` directory.  An `index.html` file with some basic HTML 5 boilerplate and links to `css/main.css` and `js/main.js` is also created, along with README.md.
+The script creates a directory in the working directory using the name passed into it as an argument. Inside this directory it creates 2 directories - `css` containing an empty `main.css` file, `js` containing an empty `main.js` file, and an empty `images` directory.  An `index.html` file with some basic HTML 5 boilerplate and links to `css/main.css` and `js/main.js` is also created, along with README.md.
 
     You, in your terminal:
     
@@ -82,5 +82,3 @@ Once installed, running chajr is really this simple! The directory name you give
 ### Wow, why did you name your file x / why did you divide your files into directories like that / why did you defer JS execution? This is all terrible, this is truly unusable garbage!
 
 You're welcome to modify or distribute any part of this script! Adapt it for yourself, or your organization and make it your own.
-
-# Pull up a chajr, get to work.
