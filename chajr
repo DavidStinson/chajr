@@ -1,11 +1,12 @@
 #!/bin/bash
-# Welcome to chajr - Css Html And Javascript Ready
-# This script builds a simple local environment to develop js, html, and css.
-# Please feel free to change it to suit your needs.
+# Welcome to chajr - Css Html And Javascript Ready - A script by David Stinson.
+# This script builds a simple local environment to develop JS, HTML, and CSS.
+# Please feel free to distribute it and change it to suit your needs.
+# Let's all stop wasting time setting up file structures!
 
 mkdir $1
 cd $1
-mkdir css js
+mkdir css js images
 touch css/main.css js/main.js
 cat <<'EOF' > index.html
 <!DOCTYPE html>
