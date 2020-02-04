@@ -38,7 +38,7 @@ The script creates a directory in the working directory using the name passed in
 
 ## Installing 📲
 
-1. In the terminal, navigate to the download location of chajr
+1. In the terminal, navigate into the downloaded chair directory.
 
 2. `mv` [chajr](http://chajr.sh) into a `$PATH` directory.
 
@@ -48,7 +48,7 @@ The script creates a directory in the working directory using the name passed in
 
     mv chajr /usr/local/bin
 
-2.3. If you lack permission to write to write to directory, check if you have a `$PATH` in your home directory that you have write access to, and place chajr there. If you don't, [learn more about $PATH](https://medium.com/@jalendport/what-exactly-is-your-shell-path-2f076f02deb4) and set up your own.
+2.3. If you lack permission to write to your chosen $PATH directory, check if you have a $PATH in your home directory that you have write access to, and place chajr there. If you don't, [learn more about $PATH](https://medium.com/@jalendport/what-exactly-is-your-shell-path-2f076f02deb4) and set up your own.
 
 ---
 
