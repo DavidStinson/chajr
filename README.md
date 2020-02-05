@@ -6,7 +6,7 @@ chajr (pronounced chair) is a simple bash script for getting **C**ss, **H**tml, 
 
 ## What chajr does 🛠
 
-The script creates a directory in the working directory using the name passed into it as an argument. Inside this directory it creates 2 directories - `css` containing an empty `main.css` file, `js` containing an empty `main.js` file, and an empty `images` directory.  An `index.html` file with some basic HTML 5 boilerplate and links to `css/main.css` and `js/main.js` is also created, along with README.md.
+The script creates a directory in the working directory using the name passed into it as an argument. Inside this directory it creates 2 directories - `css` containing an empty `main.css` file, `js` containing an empty `main.js` file, and an empty `images` directory.  An `index.html` file with some basic HTML 5 boilerplate and links to `css/main.css` and `js/main.js` is also created, along with `README.md`.
 
     You, in your terminal:
     
@@ -40,9 +40,19 @@ The script creates a directory in the working directory using the name passed in
 
 1. In the terminal, navigate into the downloaded chair directory.
 
-2. `mv` [chajr](http://chajr.sh) into a `$PATH` directory.
+2. `mv` chajr into a `$PATH` directory.
 
 2.1. Unsure of what your `$PATH` directories are? Run the `echo $PATH` command, or learn more [here](https://medium.com/@jalendport/what-exactly-is-your-shell-path-2f076f02deb4).
+
+    $ echo $PATH
+    /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
+In the above output, the `$PATH` directories are:
+`/usr/local/bin` 
+`/usr/bin` 
+`/bin` 
+`/usr/sbin` and 
+`/sbin`
 
 2.2. If the `/usr/local/bin` directory is among your `$PATH` directories, it is likely a suitable location for chajr. As long as you've followed step 1, you can run the below command to place it there.
 
