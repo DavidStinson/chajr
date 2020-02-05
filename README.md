@@ -92,3 +92,10 @@ Once installed, running chajr is really this simple! The directory name you give
 ### Wow, why did you name your file x / why did you divide your files into directories like that / why did you defer JS execution? This is all terrible, and is genuinely unusable garbage!
 
 You're welcome to modify or distribute any part of this script! Adapt it for yourself or your organization and make it your own.
+
+---
+
+## Stuff to add ➕
+
+- Add option to initialize a git repository in the created directory
+- Add installation via homebrew in place of manual installation
