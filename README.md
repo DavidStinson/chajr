@@ -111,7 +111,7 @@ For a full list of options, visit the [documentation page](https://github.com/Da
 
 ## Credits 🙌
 
-- Thanks to Ryan Chadwick for his [Bash Scripting Tutorial](https://ryanstutorials.net/bash-scripting-tutorial/), without which this script would be broken and bad. You can get started using Bash scripts with the help his tutorial!
+- Thanks to Ryan Chadwick for his [Bash Scripting Tutorial](https://ryanstutorials.net/bash-scripting-tutorial/), without which this script would be broken and bad. You can get started creating Bash scripts with the help his tutorial!
 
 ---
 
