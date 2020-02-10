@@ -1,33 +1,181 @@
 #!/bin/bash
 # Welcome to chajr - Css Html And Javascript Ready - A script by David Stinson.
 # This script builds a simple local environment to develop JS, HTML, and CSS.
-# Please feel free to distribute it and change it to suit your needs.
 # Let's all stop wasting time setting up file structures!
+
+NEWDIR=""
+NEWDIRPATH=""
+REMOTE=""
+LOCAL=""
+BLANK=""
+EDITOR=""
+REMOTEADDRESS=""
+BREW=$(brew --prefix)
 WD=$(pwd)
-mkdir $1
-cd $1
-mkdir css js images
-touch css/main.css js/main.js README.md
-cat <<'EOF' > index.html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="css/main.css"/>
-  <script defer src="js/main.js"></script>
-  <title>Title</title>
-</head>
-<body>
+
+function main(){
+  check_options $@
+}
+
+function check_options(){
+  local OPTIND opt i
+  while getopts ":belr:v" opt; do
+    case $opt in
+      b)  BLANK=True;;
+      e)  EDITOR=True;;
+      r)
+          REMOTE=True
+          REMOTEADDRESS="$OPTARG"
+          ;;
+      l)  LOCAL=True;;
+      v)
+          echo "Version 1.0.0"
+          echo "Welcome to the first release of chajr! Give feedback at:"
+          echo "https://github.com/DavidStinson/chajr/issues"
+          ;;
+      \?) help;exit 1 ;;
+    esac
+  done
+  shift $((OPTIND -1))
+  NEWDIR="$1"
+  NEWDIRPATH="$WD""/""$1"
+
+  check_for_input_errors
+}
+
+function check_for_input_errors(){
+  if [ "$NEWDIR" == "" ]; then
+    echo " "
+    echo "*CRITICAL FAILURE!* chajr NOT built because no directory to create"
+    echo "was provided."
+    echo " "
+    help; exit 1
+  fi
   
-</body>
-</html>
-EOF
-if [ -d $WD"/"$1 ]; then
-  echo chajr built in the $1 directory.
-  echo Dont\'t forget to cd into it before initializing a repo or opening in an editor.
-else
-  echo Oh no, something went wrong.
-  echo Make sure you have write permissions in the current working directory.
-fi
+  if [ "$REMOTE" == True ]; then
+    if [ "$LOCAL" == True ]; then
+      echo " "
+      echo "*WARNING!* Remote and local repository setup may not be used"
+      echo "simultaneously. Pick 1 option, then try again."
+      echo " "
+      echo "*CRITICAL FAILURE!* chajr NOT built in the ""$NEWDIR"" directory"
+      echo "due to remote/local git option conflict."
+      echo " "
+      githelp; exit 1
+    fi
+  fi
+
+  if [ "$REMOTEADDRESS" == " " ] || [ "$REMOTEADDRESS" == "-b" ] || [ "$REMOTEADDRESS" == "b" ] || [ "$REMOTEADDRESS" == "-e" ] || [ "$REMOTEADDRESS" == "e" ] || [ "$REMOTEADDRESS" == "-l" ] || [ "$REMOTEADDRESS" == "l" ]|| [ "$REMOTEADDRESS" == "-v" ] || [ "$REMOTEADDRESS" == "v" ]; then
+      echo " "
+      echo "*WARNING!* No remote repository address provided!"
+      echo " "
+      echo "*CRITICAL FAILURE!* chajr NOT built in the ""$NEWDIR"" directory"
+      echo "The -r option must have a remote address after it."
+      echo " "
+      githelp; exit 1
+  fi 
+
+  build
+}
+
+function build(){
+  mkdir "$NEWDIR"
+  # If manually installing, replace the text between cat and >> with a full
+  # path to your template files, surrounded by quotes. Repeat for each 
+  # template file.
+  echo "# ""$NEWDIR" >> "$NEWDIR""/"README.md
+  echo "#### Started on: $(date '+%m-%d-%Y')" >> "$NEWDIR""/"README.md
+  cat  "$BREW""/etc/chajr/readmeTemplate.txt">> "$NEWDIR""/"README.md
+
+  if [ "$BLANK" != True ]; then
+    mkdir "$NEWDIR""/"css "$NEWDIR""/"js "$NEWDIR""/"images
+    cat "$BREW""/etc/chajr/htmlTemplate.txt" >> "$NEWDIR""/"index.html
+    cat "$BREW""/etc/chajr/cssTemplate.txt" >> "$NEWDIR""/"css/main.css
+    cat "$BREW""/etc/chajr/jsTemplate.txt" >> "$NEWDIR""/"js/main.js
+  fi
+
+  check_build_success
+}
+
+function check_build_success(){
+  if [ -d "$NEWDIRPATH" ]; then
+    echo " "
+    echo "*SUCCESS!* A chajr was built in the ""$NEWDIR"" directory!"
+    echo " "
+    post_build_processes
+  else
+    echo " "
+    echo "*CRITICAL FAILURE!* Something has gone wrong. No chajr was built."
+    echo "Ensure you have write permissions in the current working directory."
+    echo " "
+    exit 1
+  fi
+}
+
+function post_build_processes(){
+  if [ "$REMOTE" == True ]; then
+    cd "$NEWDIRPATH"
+    git init
+    git add .
+    git commit -m "first commit"
+    git remote add origin "$REMOTEADDRESS"
+    git push -u origin master
+  fi
+  if [ "$LOCAL" == True ]; then
+    cd "$NEWDIRPATH"
+    git init
+    git add .
+    git commit -m "first commit"
+  fi
+  if [ "$EDITOR" == True ]; then
+    cd "$NEWDIRPATH"
+    open -a "Visual Studio Code" .
+  fi
+  exit 0
+}
+
+function help(){
+  echo " "
+  echo "Usage: chajr [-b] [-e] [-h] [-l | -r <remote-repository-path>]"
+  echo "             <dirtocreate>"
+  echo " "
+  echo "Options:"
+  echo " "
+  echo "  -b"
+  echo "      Creates the directory specified with only a README.md file"
+  echo "      inside of it."
+  echo " "
+  echo "  -e"
+  echo "      Opens the new directory in Visual Studio Code."
+  echo " "
+  echo "  -h"
+  echo "      Access the help dialog you're currently reading."
+  echo " "
+  echo "  -l"
+  echo "      Cannot be used simultaneously with the -r option. Creates a"
+  echo "      local git repository inside the new directory, and makes an"
+  echo "      initial commit."
+  echo " "
+  echo "  -r <remote-repository-path>"
+  echo "      Cannot be used simultaneously with the -l option. Creates a"
+  echo "      local git repository inside the new directory, makes an initial"
+  echo "      commit, and pushes to the provided remote repository path."
+  echo " "
+  echo "  -v"
+  echo "      Shows current version info and what is included in its release."
+  echo " "
+}
+
+function githelp(){
+  echo "Git Options:"
+  echo "Use the -l option to set up a local git repository and make an"
+  echo "initial commit to it."
+  echo " "
+  echo "Use -r option to set up a local git repository, make an initial commit"
+  echo "to it, and push to a remote repository. When using this option, a valid"
+  echo "remote repository must be provided. Visit this wiki page for help:"
+  echo "https://github.com/DavidStinson/chajr/wiki/Using-a-Remote-Repository"
+  echo " "
+}
+
+main $@
