@@ -6,11 +6,11 @@ chajr (pronounced chair) is a simple bash script for getting **C**ss, **H**tml, 
 
 ## What chajr does 🛠
 
-The script creates a directory in the working directory using the name passed into it as an argument. Inside this directory it creates 2 directories - `css` containing an empty `main.css` file, `js` containing an empty `main.js` file, and an empty `images` directory.  An `index.html` file with some basic HTML 5 boilerplate and links to `css/main.css` and `js/main.js` is also created, along with `README.md`.
+When unmodified by options, chajr creates a directory in the working directory using the name passed into it as an argument. Inside this directory, it creates 3 directories - `css` containing an empty `main.css` file, `js` containing a `main.js` file with some basic boilerplate, and an empty `images` directory.  An `index.html` file with some basic HTML 5 boilerplate and links to `css/main.css` and `js/main.js` is also created, along with a `[README.md](http://readme.md)` file.
 
     You, in your terminal:
     
-    $ chajr MyFancyNewProject
+    chajr MyFancyNewProject
     
     This script:
     
@@ -22,15 +22,18 @@ The script creates a directory in the working directory using the name passed in
         |---📄index.html (NEW!) 
         |     (Includes HTML boilerplate and links to main.css and main.js)
         |
-        |---📄README.md (NEW!)
-        |
+    	|---📄README.md (NEW!)
+    	|     (Includes the name of your project as a header and the 
+    	|      current date as a h4 subhead.)
+    	|
         |---📁css (NEW!)
         |    \
         |     📄main.css (NEW!)(Empty)
         |
         |---📁js (NEW!)
         |    \
-        |     📄main.js (NEW!)(Empty)
+        |     📄main.js (NEW!)
+    	|       (Includes a light touch of js boilerplate)
         |
         |---📁images (NEW!)
 
@@ -38,64 +41,83 @@ The script creates a directory in the working directory using the name passed in
 
 ## Installing 📲
 
-1. In the terminal, navigate into the downloaded chair directory.
+Easy installation of chajr relies on [Homebrew.](https://brew.sh/) Once Homebrew is installed, 2 commands will install chajr.
 
-2. `mv` chajr into a `$PATH` directory.
+1. In the terminal, run the below command:
 
-2.1. Unsure of what your `$PATH` directories are? Run the `echo $PATH` command, or learn more [here](https://medium.com/@jalendport/what-exactly-is-your-shell-path-2f076f02deb4).
+        brew tap davidstinson/chajr
 
-    $ echo $PATH
-    /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+2. In the terminal, run the below command:
 
-In the above output, the `$PATH` directories are:
-`/usr/local/bin` 
-`/usr/bin` 
-`/bin` 
-`/usr/sbin` and 
-`/sbin`
+        brew install chajr
 
-2.2. If the `/usr/local/bin` directory is among your `$PATH` directories, it is likely a suitable location for chajr. As long as you've followed step 1, you can run the below command to place it there.
+3. Wow, you're done!
 
-    mv chajr /usr/local/bin
-
-2.3. If you lack permission to write to your chosen $PATH directory, check if you have a $PATH in your home directory that you have write access to, and place chajr there. If you don't, [learn more about $PATH](https://medium.com/@jalendport/what-exactly-is-your-shell-path-2f076f02deb4) and set up your own.
+While Homebrew installation is highly recommended, [manual installation is possible](https://github.com/DavidStinson/chajr/wiki/Advanced-Installation).
 
 ---
 
 ## Running 🏃‍♀️🏃‍♂️
 
+To run chajr, use the below command in the terminal
+
     chajr DirectoryName
 
-Once installed, running chajr is really this simple! The directory name you give to chajr must not contain any spaces. 
+***The directory name you give to chajr should never contain any spaces.*** Once installed, running chajr is this simple!
 
 ---
 
-## Details
+## Updating 🎁
 
-### What HTML 5 Boilerplate are you putting into my index.html file?
+Updates may be released periodically for chajr. To retrieve these updates, run the below commands in the terminal.
 
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <link rel="stylesheet" href="css/main.css"/>
-      <script defer src="js/main.js"></script>
-      <title>Title</title>
-    </head>
-    <body>
-      
-    </body>
-    </html>
+    brew update
 
-### Wow, why did you name your file x / why did you divide your files into directories like that / why did you defer JS execution? This is all terrible, and is genuinely unusable garbage!
+    ==> Updated formulae
+    davidstinson/chajr/chajr
 
-You're welcome to modify or distribute any part of this script! Adapt it for yourself or your organization and make it your own.
+If the above is among the output, there is an update available for chajr. You can install it using this command:
+
+    brew upgrade chajr
+    # Alternatively, to install all new updates to homebrew and formulas in one step 
+    # run this command:
+    brew update && brew upgrade
 
 ---
 
-## Stuff to add ➕
+## chajr Templates 📃
 
-- Add option to initialize a git repository in the created directory
-- Add installation via homebrew in place of manual installation
+chajr builds your new project files from plain text template files that you can customize to make chajr work better for your needs. In a typical homebrew installation, these template files are located in the `/usr/local/etc/chajr/` directory if they are not in that location, check out the [troubleshooting page](https://github.com/DavidStinson/chajr/wiki/Troubleshooting). These files aren't modified during updates, so any changes you make to them are preserved and usable in all future versions. Learn more about the templates [here](https://github.com/DavidStinson/chajr/wiki/File-Templates-and-Configuration).
+
+---
+
+## chajr Options 🎨
+
+chajr can automate more than just directory creation. Want to set up a local git repository in the new directory you're making then push it to a remote repository all in the same command? chajr can do that. Want to open your new directory in VS Code immediately after you have created your new files? chajr can do that too. It can even do both of those things at once!
+
+### Example:
+
+    chajr -er https://github.com/user/MyFancyNewProject.git MyFancyNewProject
+
+This command makes the `MyFancyNewProject` directory with all the standard chajr files inside of it, creates and commits to a local repository, then pushes to the remote repository `https://github.com/user/MyFancyNewProject.git`. After completing that, it opens the `MyFancyNewProject` directory in VS Code. 
+
+Like many bash programs, multiple options can be combined after a single dash when they don't require arguments separating them (so they appear as one string of characters like `-er`). They can also be split, like this example where each option has a `-` before it:
+
+    chajr -e -l MyFancyNewProject
+
+For a full list of options, visit the [documentation page](https://github.com/DavidStinson/chajr/wiki/Documentation), or run just run the `chajr -h` command in your terminal.
+
+---
+
+## Credits 🙌
+
+- Thanks to Ryan Chadwick for his [Bash Scripting Tutorial](https://ryanstutorials.net/bash-scripting-tutorial/), without which this script would be broken and bad. You can get started using Bash scripts with the help his tutorial!
+
+---
+
+## Stuff to add or change 🚀
+
+- Add an unobtrusive way for the user to choose an editor other than VS Code. Not sure how to accomplish this without adding a bunch of options or getting in the users' way. Unfortunately, this is probably best accomplished on the script level for now, even if the changes don't persist across updates.
+- If the user doesn't provide a remote repository when using the -r option, weird things start to happen. Temporarily solved this issue, but the solution cannot scale. Need to investigate other options.
+- Add an -i option to add repository level .gitignore from a template.
+- README.md receives the project name and date from the chajr script, which may be undesirable behavior in certain circumstances, and currently requires modifying the script to change. Need to investigate other options (perhaps an option that would silence this behavior?)
