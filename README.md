@@ -22,10 +22,10 @@ When unmodified by options, chajr creates a directory in the working directory u
         |---📄index.html (NEW!) 
         |     (Includes HTML boilerplate and links to main.css and main.js)
         |
-    	|---📄README.md (NEW!)
-    	|     (Includes the name of your project as a header and the 
-    	|      current date as a h4 subhead.)
-    	|
+        |---📄README.md (NEW!)
+        |     (Includes the name of your project as a header and the 
+        |      current date as a h4 subhead.)
+        |
         |---📁css (NEW!)
         |    \
         |     📄main.css (NEW!)(Empty)
@@ -33,7 +33,7 @@ When unmodified by options, chajr creates a directory in the working directory u
         |---📁js (NEW!)
         |    \
         |     📄main.js (NEW!)
-    	|       (Includes a light touch of js boilerplate)
+        |       (Includes a light touch of js boilerplate)
         |
         |---📁images (NEW!)
 
