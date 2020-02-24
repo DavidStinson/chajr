@@ -116,7 +116,7 @@ function build(){
       mkdir "$NEWDIR""/"bin "$NEWDIR""/"config "$NEWDIR""/"controllers
       mkdir "$NEWDIR""/"models "$NEWDIR""/"public "$NEWDIR""/"routes
       mkdir "$NEWDIR""/"views mkdir "$NEWDIR""/"views/tktks
-      mkdir "$NEWDIR""/"views"/"partials "$NEWDIR""/"public"/"images mkdir 
+      mkdir "$NEWDIR""/"views"/"partials "$NEWDIR""/"public"/"images 
       mkdir "$NEWDIR""/"public"/"javascripts "$NEWDIR""/"public"/"stylesheets
       cat "$BREW""/etc/chajr/node/bin/wwwTemplate.txt" >> "$NEWDIR""/"bin/www
       cat "$BREW""/etc/chajr/node/envTemplate.txt" >> "$NEWDIR""/".env
