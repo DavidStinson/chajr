@@ -119,8 +119,9 @@ function build(){
       mkdir "$NEWDIR""/"views mkdir "$NEWDIR""/"views/tktks
       mkdir "$NEWDIR""/"public"/"images
       mkdir "$NEWDIR""/"public"/"javascripts "$NEWDIR""/"public"/"stylesheets
-      cat "$BREW""/etc/chajr/node/envTemplate.txt" >> "$NEWDIR""/".env
       cat "$BREW""/etc/chajr/node/bin/wwwTemplate.txt" >> "$NEWDIR""/"bin/www
+      cat "$BREW""/etc/chajr/node/envTemplate.txt" >> "$NEWDIR""/".env
+      cat "$BREW""/etc/chajr/node/serverTemplate.txt" >> "$NEWDIR""/"server.js
       cat "$BREW""/etc/chajr/node/config/dbTemplate.txt" >> "$NEWDIR""/"config/database.js
       cat "$BREW""/etc/chajr/node/controllers/controllersTemplate.txt" >> "$NEWDIR""/"controllers/tktks.js
       cat "$BREW""/etc/chajr/node/models/modelTemplate.txt" >> "$NEWDIR""/"models/tktk.js
@@ -173,6 +174,7 @@ function post_build_processes(){
   # init npm AFTER adding remotes to include remotes in package.json
   if [ "$MEN" == True ]; then
     npm init --yes
+    npm i
   fi
   if [ "$PRETTIER" = True ]; then
     npm i --save-exact --save-dev prettier
