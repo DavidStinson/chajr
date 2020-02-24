@@ -37,6 +37,8 @@ When unmodified by options, chajr creates a directory in the working directory u
         |
         |---📁images (NEW!)
 
+## chajr now supports Node/Express/MongoDB app creation! [Learn more on the wiki page](https://github.com/DavidStinson/chajr/wiki/Node-Express-MongoDB)!
+
 ---
 
 ## Installing 📲
@@ -112,6 +114,7 @@ For a full list of options, visit the [documentation page](https://github.com/Da
 ## Credits 🙌
 
 - Thanks to Ryan Chadwick for his [Bash Scripting Tutorial](https://ryanstutorials.net/bash-scripting-tutorial/), without which this script would be broken and bad. You can get started creating Bash scripts with the help his tutorial!
+- chajr -n would not have been possible to build without the foundation provided by [Express Generator](https://github.com/expressjs/generator). While chajr is hyper-focused on enhancing Node/Express/MongoDB workflows, Express Generator is an excellent substitution for many other projects, be sure to check it out.
 
 ---
 
@@ -121,3 +124,4 @@ For a full list of options, visit the [documentation page](https://github.com/Da
 - If the user doesn't provide a remote repository when using the -r option, weird things start to happen. Temporarily solved this issue, but the solution cannot scale. Need to investigate other options.
 - Add an -i option to add repository level .gitignore from a template.
 - README.md receives the project name and date from the chajr script, which may be undesirable behavior in certain circumstances, and currently requires modifying the script to change. Need to investigate other options (perhaps an option that would silence this behavior?)
+- Add Heroku support.
