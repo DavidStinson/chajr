@@ -1,17 +1,21 @@
 #!/bin/bash
 # Welcome to chajr - Css Html And Javascript Ready - A script by David Stinson.
 # This script builds a simple local environment to develop JS, HTML, and CSS.
+# It can also build a starter environment to develop Node applications using 
+# MongoDB and Express. 
 # Let's all stop wasting time setting up file structures!
 
 NEWDIR=""
 NEWDIRPATH=""
-REMOTE=""
-LOCAL=""
-BLANK=""
-EDITOR=""
-REMOTEADDRESS=""
 BREW=$(brew --prefix)
 WD=$(pwd)
+BLANK=""
+EDITOR=""
+LOCAL=""
+MEN=""
+PRETTIER=""
+REMOTE=""
+REMOTEADDRESS=""
 
 function main(){
   check_options $@
@@ -19,18 +23,24 @@ function main(){
 
 function check_options(){
   local OPTIND opt i
-  while getopts ":belr:v" opt; do
+  while getopts ":belnpr:v" opt; do
     case $opt in
       b)  BLANK=True;;
       e)  EDITOR=True;;
+      l)  LOCAL=True;;
+      n)  MEN=True;;
+      p)  PRETTIER=True;;
       r)
           REMOTE=True
           REMOTEADDRESS="$OPTARG"
           ;;
-      l)  LOCAL=True;;
       v)
-          echo "Version 1.0.0"
-          echo "Welcome to the first release of chajr! Give feedback at:"
+          echo "Version 1.1.0"
+          echo "New in this version:"
+          echo "  - Build Node with Express and MongoDB environments"
+          echo "  - Prettier Integration"
+          echo " "
+          echo "Give feedback on this version at:"
           echo "https://github.com/DavidStinson/chajr/issues"
           ;;
       \?) help;exit 1 ;;
@@ -52,20 +62,29 @@ function check_for_input_errors(){
     help; exit 1
   fi
   
-  if [ "$REMOTE" == True ]; then
-    if [ "$LOCAL" == True ]; then
-      echo " "
-      echo "*WARNING!* Remote and local repository setup may not be used"
-      echo "simultaneously. Pick 1 option, then try again."
-      echo " "
-      echo "*CRITICAL FAILURE!* chajr NOT built in the ""$NEWDIR"" directory"
-      echo "due to remote/local git option conflict."
-      echo " "
-      githelp; exit 1
-    fi
+  if [ "$MEN" == True ] && [ "$BLANK" == True ]; then
+    echo " "
+    echo "*WARNING!* A README.md only chajr and a Node/Express/MongoDB chajr"
+    echo "cannot be created simultaneously. Pick 1 option, then try again."
+    echo " "
+    echo "*CRITICAL FAILURE!* chajr NOT built in the ""$NEWDIR"" directory due"
+    echo "to file structure option conflict."
+    echo " "
+    help; exit 1
   fi
 
-  if [ "$REMOTEADDRESS" == " " ] || [ "$REMOTEADDRESS" == "-b" ] || [ "$REMOTEADDRESS" == "b" ] || [ "$REMOTEADDRESS" == "-e" ] || [ "$REMOTEADDRESS" == "e" ] || [ "$REMOTEADDRESS" == "-l" ] || [ "$REMOTEADDRESS" == "l" ]|| [ "$REMOTEADDRESS" == "-v" ] || [ "$REMOTEADDRESS" == "v" ]; then
+  if [ "$REMOTE" == True ] && [ "$LOCAL" == True ]; then
+    echo " "
+    echo "*WARNING!* Remote and local repository setup may not be used"
+    echo "simultaneously. Pick 1 option, then try again."
+    echo " "
+    echo "*CRITICAL FAILURE!* chajr NOT built in the ""$NEWDIR"" directory due"
+    echo "to remote/local git option conflict."
+    echo " "
+    githelp; exit 1
+  fi
+
+  if [ "$REMOTEADDRESS" == " " ] || [ "$REMOTEADDRESS" == "-b" ] || [ "$REMOTEADDRESS" == "b" ] || [ "$REMOTEADDRESS" == "-e" ] || [ "$REMOTEADDRESS" == "e" ] || [ "$REMOTEADDRESS" == "-l" ] || [ "$REMOTEADDRESS" == "l" ] || [ "$REMOTEADDRESS" == "-n" ] || [ "$REMOTEADDRESS" == "n" ] || [ "$REMOTEADDRESS" == "-p" ] || [ "$REMOTEADDRESS" == "p" ] || [ "$REMOTEADDRESS" == "-r" ] || [ "$REMOTEADDRESS" == "r" ] || [ "$REMOTEADDRESS" == "-v" ] || [ "$REMOTEADDRESS" == "v" ]; then
       echo " "
       echo "*WARNING!* No remote repository address provided!"
       echo " "
@@ -88,10 +107,35 @@ function build(){
   cat  "$BREW""/etc/chajr/readmeTemplate.txt">> "$NEWDIR""/"README.md
 
   if [ "$BLANK" != True ]; then
-    mkdir "$NEWDIR""/"css "$NEWDIR""/"js "$NEWDIR""/"images
-    cat "$BREW""/etc/chajr/htmlTemplate.txt" >> "$NEWDIR""/"index.html
-    cat "$BREW""/etc/chajr/cssTemplate.txt" >> "$NEWDIR""/"css/main.css
-    cat "$BREW""/etc/chajr/jsTemplate.txt" >> "$NEWDIR""/"js/main.js
+    if [ "$MEN" != True ]; then
+      mkdir "$NEWDIR""/"css "$NEWDIR""/"js "$NEWDIR""/"images
+      cat "$BREW""/etc/chajr/htmlTemplate.txt" >> "$NEWDIR""/"index.html
+      cat "$BREW""/etc/chajr/cssTemplate.txt" >> "$NEWDIR""/"css/main.css
+      cat "$BREW""/etc/chajr/jsTemplate.txt" >> "$NEWDIR""/"js/main.js
+    fi
+    if [ "$MEN" == True ]; then
+      mkdir "$NEWDIR""/"bin "$NEWDIR""/"config "$NEWDIR""/"controllers
+      mkdir "$NEWDIR""/"models "$NEWDIR""/"public "$NEWDIR""/"routes
+      mkdir "$NEWDIR""/"views mkdir "$NEWDIR""/"views/tktks
+      mkdir "$NEWDIR""/"public"/"images
+      mkdir "$NEWDIR""/"public"/"javascripts "$NEWDIR""/"public"/"stylesheets
+      cat "$BREW""/etc/chajr/node/envTemplate.txt" >> "$NEWDIR""/".env
+      cat "$BREW""/etc/chajr/node/bin/wwwTemplate.txt" >> "$NEWDIR""/"bin/www
+      cat "$BREW""/etc/chajr/node/config/dbTemplate.txt" >> "$NEWDIR""/"config/database.js
+      cat "$BREW""/etc/chajr/node/controllers/controllersTemplate.txt" >> "$NEWDIR""/"controllers/tktks.js
+      cat "$BREW""/etc/chajr/node/models/modelTemplate.txt" >> "$NEWDIR""/"models/tktk.js
+      cat "$BREW""/etc/chajr/node/public/cssTemplate.txt" >> "$NEWDIR""/"public/stylesheets/main.css
+      cat "$BREW""/etc/chajr/node/routes/routesTktksTemplate.txt" >> "$NEWDIR""/"routes/tktks.js
+      cat "$BREW""/etc/chajr/node/routes/routesUsersTemplate.txt" >> "$NEWDIR""/"routes/users.js
+      cat "$BREW""/etc/chajr/node/routes/routesIndexTemplate.txt" >> "$NEWDIR""/"routes/index.js
+      cat "$BREW""/etc/chajr/node/views/viewsTktksIndexTemplate.txt" >> "$NEWDIR""/"views/tktks/index.ejs
+      cat "$BREW""/etc/chajr/node/views/viewsIndexTemplate.txt" >> "$NEWDIR""/"views/index.ejs
+      cat "$BREW""/etc/chajr/node/views/viewsErrorTemplate.txt" >> "$NEWDIR""/"views/error.ejs
+      cat "$BREW""/etc/chajr/node/packageJsonTemplate.txt" >> "$NEWDIR""/"package.json
+    fi
+  fi
+  if [ "$PRETTIER" == True ]; then
+    cat "$BREW""/etc/chajr/prettierTemplate.txt" >> "$NEWDIR""/".prettierrc
   fi
 
   check_build_success
@@ -113,8 +157,8 @@ function check_build_success(){
 }
 
 function post_build_processes(){
+  cd "$NEWDIRPATH"
   if [ "$REMOTE" == True ]; then
-    cd "$NEWDIRPATH"
     git init
     git add .
     git commit -m "first commit"
@@ -122,13 +166,18 @@ function post_build_processes(){
     git push -u origin master
   fi
   if [ "$LOCAL" == True ]; then
-    cd "$NEWDIRPATH"
     git init
     git add .
     git commit -m "first commit"
   fi
+  # init npm AFTER adding remotes to include remotes in package.json
+  if [ "$MEN" == True ]; then
+    npm init --yes
+  fi
+  if [ "$PRETTIER" = True ]; then
+    npm i --save-exact --save-dev prettier
+  fi
   if [ "$EDITOR" == True ]; then
-    cd "$NEWDIRPATH"
     open -a "Visual Studio Code" .
   fi
   exit 0
@@ -136,14 +185,15 @@ function post_build_processes(){
 
 function help(){
   echo " "
-  echo "Usage: chajr [-b] [-e] [-h] [-l | -r <remote-repository-path>]"
+  echo "Usage: chajr [-e] [-h] [-p] [-v] [-b | -n ]"
+  echo "             [-l | -r <remote-repository-path>]"
   echo "             <dirtocreate>"
   echo " "
   echo "Options:"
   echo " "
   echo "  -b"
   echo "      Creates the directory specified with only a README.md file"
-  echo "      inside of it."
+  echo "      inside of it. Cannot be used with the -n option."
   echo " "
   echo "  -e"
   echo "      Opens the new directory in Visual Studio Code."
@@ -156,6 +206,13 @@ function help(){
   echo "      local git repository inside the new directory, and makes an"
   echo "      initial commit."
   echo " "
+  echo "  -n"
+  echo "      Builds a Node.js, Express, and MongoDB ready chajr. Cannot be"
+  echo "      used with the -b option"
+  echo " "
+  echo "  -p"
+  echo "      Adds a .prettierrc configuration file in the project directory."
+  echo " "
   echo "  -r <remote-repository-path>"
   echo "      Cannot be used simultaneously with the -l option. Creates a"
   echo "      local git repository inside the new directory, makes an initial"
@@ -164,17 +221,36 @@ function help(){
   echo "  -v"
   echo "      Shows current version info and what is included in its release."
   echo " "
+  echo "Example usage:"
+  echo " "
+  echo "  chajr -nper https://github.com/exampleUser/exampleSite.git example"
+  echo " "
+  echo "    This command creates a new directory called example in the working"
+  echo "    directory. Inside this directory, a Node/Express/MongoDB file"
+  echo "    structure will be built, and a Prettier configuration file added."
+  echo "    A local git repo will be created, and an initial commit will be"
+  echo "    made to the provided github.com repo. Finally, the newly created" 
+  echo "    project will be opened in Visual Studio Code."
+  echo " "
+  echo "  chajr -b -e -l exampleTwo"
+  echo " "
+  echo "    This command creates a new directory called exampleTwo in the"
+  echo "    working directory. Inside this directory a README.md is created,"
+  echo "    along with a local git repository. The exampleTwo directory is"
+  echo "    then opened in Visual Stuio Code"
+  echo " "
 }
 
 function githelp(){
   echo "Git Options:"
   echo "Use the -l option to set up a local git repository and make an"
-  echo "initial commit to it."
+  echo "initial commit to it. Cannot be used with the -r option."
   echo " "
   echo "Use -r option to set up a local git repository, make an initial commit"
   echo "to it, and push to a remote repository. When using this option, a valid"
   echo "remote repository must be provided. Visit this wiki page for help:"
   echo "https://github.com/DavidStinson/chajr/wiki/Using-a-Remote-Repository"
+  echo "Cannot be used with the -l option."
   echo " "
 }
 
