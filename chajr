@@ -35,9 +35,10 @@ function check_options(){
           REMOTEADDRESS="$OPTARG"
           ;;
       v)
-          echo "Version 1.1.2"
+          echo "Version 1.1.3"
           echo "New in this version:"
-          echo "  - Add partials directory inside views directory"
+          echo "  - Fix for erroneous mkdir directory being created in"
+          echo "    working directory"
           echo " "
           echo "Give feedback on this version at:"
           echo "https://github.com/DavidStinson/chajr/issues"
