@@ -35,10 +35,9 @@ function check_options(){
           REMOTEADDRESS="$OPTARG"
           ;;
       v)
-          echo "Version 1.1.0"
+          echo "Version 1.1.2"
           echo "New in this version:"
-          echo "  - Build Node with Express and MongoDB environments"
-          echo "  - Prettier Integration"
+          echo "  - Add partials directory inside views directory"
           echo " "
           echo "Give feedback on this version at:"
           echo "https://github.com/DavidStinson/chajr/issues"
