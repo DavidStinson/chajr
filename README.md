@@ -37,7 +37,7 @@ When unmodified by options, chajr creates a directory in the working directory u
         |
         |---📁images (NEW!)
 
-## chajr now supports Node/Express/MongoDB app creation! [Learn more on the wiki page](https://github.com/DavidStinson/chajr/wiki/Node-Express-MongoDB)!
+### chajr now supports Node/Express/MongoDB app creation! [Learn more here.](https://github.com/DavidStinson/chajr/wiki/Node-Express-MongoDB)!
 
 ---
 
@@ -69,6 +69,30 @@ To run chajr, use the below command in the terminal
 
 ---
 
+## chajr Options 🎨
+
+chajr can automate more than just directory creation. Want to set up a local git repository in the new directory you're making then push it to a remote repository all in the same command? chajr can do that. Want to open your new directory in VS Code immediately after you have created your new files? chajr can do that too. It can even do both of those things at once!
+
+### Example:
+
+    chajr -er https://github.com/user/MyFancyNewProject.git MyFancyNewProject
+
+This command makes the `MyFancyNewProject` directory with all the standard chajr files inside of it, creates and commits to a local repository, then pushes to the remote repository `https://github.com/user/MyFancyNewProject.git`. After completing that, it opens the `MyFancyNewProject` directory in VS Code. 
+
+Like many bash programs, multiple options can be combined after a single dash when they don't require arguments separating them (so they appear as one string of characters like `-er`). They can also be split, like this example where each option has a `-` before it:
+
+    chajr -e -l MyFancyNewProject
+
+### For a full list of options, visit the [documentation page](https://github.com/DavidStinson/chajr/wiki/Documentation), or run just run the `chajr -h` command in your terminal.
+
+---
+
+## chajr Templates 📃
+
+chajr builds your new project files from plain text template files that you can customize to make chajr work better for your needs. In a typical homebrew installation, these template files are located in the `/usr/local/etc/chajr/` directory if they are not in that location, check out the [troubleshooting page](https://github.com/DavidStinson/chajr/wiki/Troubleshooting). These files aren't modified during updates, so any changes you make to them are preserved and usable in all future versions. Learn more about the templates [here](https://github.com/DavidStinson/chajr/wiki/File-Templates-and-Configuration).
+
+---
+
 ## Updating 🎁
 
 Updates may be released periodically for chajr. To retrieve these updates, run the below commands in the terminal.
@@ -84,30 +108,6 @@ If the above is among the output, there is an update available for chajr. You ca
     # Alternatively, to install all new updates to homebrew and formulas in one step 
     # run this command:
     brew update && brew upgrade
-
----
-
-## chajr Templates 📃
-
-chajr builds your new project files from plain text template files that you can customize to make chajr work better for your needs. In a typical homebrew installation, these template files are located in the `/usr/local/etc/chajr/` directory if they are not in that location, check out the [troubleshooting page](https://github.com/DavidStinson/chajr/wiki/Troubleshooting). These files aren't modified during updates, so any changes you make to them are preserved and usable in all future versions. Learn more about the templates [here](https://github.com/DavidStinson/chajr/wiki/File-Templates-and-Configuration).
-
----
-
-## chajr Options 🎨
-
-chajr can automate more than just directory creation. Want to set up a local git repository in the new directory you're making then push it to a remote repository all in the same command? chajr can do that. Want to open your new directory in VS Code immediately after you have created your new files? chajr can do that too. It can even do both of those things at once!
-
-### Example:
-
-    chajr -er https://github.com/user/MyFancyNewProject.git MyFancyNewProject
-
-This command makes the `MyFancyNewProject` directory with all the standard chajr files inside of it, creates and commits to a local repository, then pushes to the remote repository `https://github.com/user/MyFancyNewProject.git`. After completing that, it opens the `MyFancyNewProject` directory in VS Code. 
-
-Like many bash programs, multiple options can be combined after a single dash when they don't require arguments separating them (so they appear as one string of characters like `-er`). They can also be split, like this example where each option has a `-` before it:
-
-    chajr -e -l MyFancyNewProject
-
-For a full list of options, visit the [documentation page](https://github.com/DavidStinson/chajr/wiki/Documentation), or run just run the `chajr -h` command in your terminal.
 
 ---
 
