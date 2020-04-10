@@ -196,7 +196,7 @@ function check_build_success(){
 function post_build_processes(){
   cd "$NEWDIRPATH"
   if [ "$MERN" == True ]; then
-    npm i express morgan serve-favicon mongoose react-router-dom dotenv
+    npm i express morgan serve-favicon mongoose react-router-dom dotenv bcrypt jsonwebtoken
     cd ..
     mkdir "$NEWDIR""/"config
     mkdir "$NEWDIR""/"controllers 
@@ -240,7 +240,6 @@ function post_build_processes(){
     cat "$BREW""/etc/chajr/mern/services/tktkApiTemplate.txt" >> "$NEWDIR""/"src/services/tktk-api.js
     cat "$BREW""/etc/chajr/mern/services/userApiTemplate.txt" >> "$NEWDIR""/"src/services/user-api.js
     cat "$BREW""/etc/chajr/mern/services/tokenTemplate.txt" >> "$NEWDIR""/"src/services/tokenService.js
-
 
     rm "$NEWDIR"/src/App.js
     rm "$NEWDIR"/src/App.css
