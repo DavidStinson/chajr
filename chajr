@@ -37,7 +37,7 @@ function check_options(){
           REMOTEADDRESS="$OPTARG"
           ;;
       v)
-          echo "Version 1.2"
+          echo "Version 1.2.2"
           echo "New in this version:"
           echo "  - Add -m option to create a project with a"
           echo "    MERN stack"
