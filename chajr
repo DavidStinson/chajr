@@ -133,7 +133,7 @@ function build(){
   # path to your template files, surrounded by quotes. Repeat for each 
   # template file.
 
-  if [ "$MERN" != True ]
+  if [ "$MERN" != True ]; then
     echo "# ""$NEWDIR" >> "$NEWDIR""/"README.md
     echo "#### Started on: $(date '+%m-%d-%Y')" >> "$NEWDIR""/"README.md
     cat  "$BREW""/etc/chajr/readmeTemplate.txt">> "$NEWDIR""/"README.md
@@ -205,8 +205,8 @@ function post_build_processes(){
     mkdir "$NEWDIR""/"routes/api 
     mkdir "$NEWDIR""/"src/pages 
     mkdir "$NEWDIR""/"src/pages/App
-    mkdir "$NEWDIR""/"src/pages/Login
-    mkdir "$NEWDIR""/"src/pages/Signup
+    mkdir "$NEWDIR""/"src/pages/LoginPage
+    mkdir "$NEWDIR""/"src/pages/SignupPage
     mkdir "$NEWDIR""/"src/pages/TktksSecretPage
     mkdir "$NEWDIR""/"src/components
     mkdir "$NEWDIR""/"src/components/NavBar
@@ -256,6 +256,7 @@ function post_build_processes(){
     echo "#### Started on: $(date '+%m-%d-%Y')" >> "$NEWDIR""/"README.md
     cat  "$BREW""/etc/chajr/readmeTemplate.txt">> "$NEWDIR""/"README.md
 
+    cd "$NEWDIRPATH"
     npm run build
 
     if [ "$REMOTE" == True ]; then
