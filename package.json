@@ -1,6 +1,6 @@
 {
   "name": "chajr",
-  "version": "2.0.0",
+  "version": "2.0.0-a",
   "description": "A light-weight package for getting Css, Html, And Javascript Ready.",
   "main": "./bin/index.js",
   "scripts": {
@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/DavidStinson/chajr/issues"
   },
-  "homepage": "https://github.com/DavidStinson/chajr#readme"
+  "homepage": "https://github.com/DavidStinson/chajr#readme",
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "commander": "^8.0.0"
+  }
 }
