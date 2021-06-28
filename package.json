@@ -1,0 +1,19 @@
+{
+  "name": "chajr",
+  "version": "2.0.0",
+  "description": "A light-weight package for getting Css, Html, And Javascript Ready.",
+  "main": "./bin/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavidStinson/chajr.git"
+  },
+  "author": "David Stinson <mail@davidstinson.dev>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DavidStinson/chajr/issues"
+  },
+  "homepage": "https://github.com/DavidStinson/chajr#readme"
+}
