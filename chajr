@@ -1,0 +1,372 @@
+#!/bin/bash
+# Welcome to chajr - Css Html And Javascript Ready - A script by David Stinson.
+# This script builds a simple local environment to develop JS, HTML, and CSS.
+# It can also build a starter environment to develop Node applications using 
+# MongoDB and Express or build a MERN stack application.
+# Let's all stop wasting time setting up file structures!
+
+NEWDIR=""
+NEWDIRPATH=""
+BREW=$(brew --prefix)
+WD=$(pwd)
+BLANK=""
+EDITOR=""
+LOCAL=""
+MEN=""
+MERN=""
+PRETTIER=""
+REMOTE=""
+REMOTEADDRESS=""
+
+function main(){
+  check_options $@
+}
+
+function check_options(){
+  local OPTIND opt i
+  while getopts ":belmnpr:v" opt; do
+    case $opt in
+      b)  BLANK=True;;
+      e)  EDITOR=True;;
+      l)  LOCAL=True;;
+      m)  MERN=True;;
+      n)  MEN=True;;
+      p)  PRETTIER=True;;
+      r)
+          REMOTE=True
+          REMOTEADDRESS="$OPTARG"
+          ;;
+      v)
+          echo "Version 1.2"
+          echo "New in this version:"
+          echo "  - Add -m option to create a project with a"
+          echo "    MERN stack"
+          echo " "
+          echo "Give feedback on this version at:"
+          echo "https://github.com/DavidStinson/chajr/issues"
+          ;;
+      \?) help;exit 1 ;;
+    esac
+  done
+  shift $((OPTIND -1))
+
+  if [ "$MERN" == True ]; then
+    NEWDIR=$( echo "$1" | tr '[:upper:]' '[:lower:]' )
+    NEWDIRPATH="$WD""/""$NEWDIR"
+  else
+    NEWDIR="$1"
+    NEWDIRPATH="$WD""/""$NEWDIR"
+  fi
+
+  check_for_input_errors
+}
+
+function check_for_input_errors(){
+  if [ "$NEWDIR" == "" ]; then
+    echo " "
+    echo "*CRITICAL FAILURE!* chajr NOT built because no directory to create"
+    echo "was provided."
+    echo " "
+    help; exit 1
+  fi
+  
+  if [ "$MEN" == True ] && [ "$BLANK" == True ]; then
+    echo " "
+    echo "*WARNING!* A README.md only chajr and a Node/Express/MongoDB chajr"
+    echo "cannot be created simultaneously. Pick 1 option, then try again."
+    echo " "
+    echo "*CRITICAL FAILURE!* chajr NOT built in the ""$NEWDIR"" directory due"
+    echo "to file structure option conflict."
+    echo " "
+    help; exit 1
+  fi
+
+  if [ "$MERN" == True ] && [ "$BLANK" == True ]; then
+    echo " "
+    echo "*WARNING!* A README.md only chajr and a MERN chajr"
+    echo "cannot be created simultaneously. Pick 1 option, then try again."
+    echo " "
+    echo "*CRITICAL FAILURE!* chajr NOT built in the ""$NEWDIR"" directory due"
+    echo "to file structure option conflict."
+    echo " "
+    help; exit 1
+  fi
+
+  if [ "$MERN" == True ] && [ "$MEN" == True ]; then
+    echo " "
+    echo "*WARNING!* MEN and MERN stack may not be used"
+    echo "simultaneously. Pick 1 option, then try again."
+    echo " "
+    echo "*CRITICAL FAILURE!* chajr NOT built in the ""$NEWDIR"" directory due"
+    echo "to a stack option conflict."
+    echo " "
+    help; exit 1
+  fi
+
+  if [ "$REMOTE" == True ] && [ "$LOCAL" == True ]; then
+    echo " "
+    echo "*WARNING!* Remote and local repository setup may not be used"
+    echo "simultaneously. Pick 1 option, then try again."
+    echo " "
+    echo "*CRITICAL FAILURE!* chajr NOT built in the ""$NEWDIR"" directory due"
+    echo "to remote/local git option conflict."
+    echo " "
+    githelp; exit 1
+  fi
+
+  if [ "$REMOTEADDRESS" == " " ] || [ "$REMOTEADDRESS" == "-b" ] || [ "$REMOTEADDRESS" == "b" ] || [ "$REMOTEADDRESS" == "-e" ] || [ "$REMOTEADDRESS" == "e" ] || [ "$REMOTEADDRESS" == "-l" ] || [ "$REMOTEADDRESS" == "l" ] || [ "$REMOTEADDRESS" == "-m" ] || [ "$REMOTEADDRESS" == "m" ] || [ "$REMOTEADDRESS" == "-n" ] || [ "$REMOTEADDRESS" == "n" ] || [ "$REMOTEADDRESS" == "-p" ] || [ "$REMOTEADDRESS" == "p" ] || [ "$REMOTEADDRESS" == "-r" ] || [ "$REMOTEADDRESS" == "r" ] || [ "$REMOTEADDRESS" == "-v" ] || [ "$REMOTEADDRESS" == "v" ]; then
+      echo " "
+      echo "*WARNING!* No remote repository address provided!"
+      echo " "
+      echo "*CRITICAL FAILURE!* chajr NOT built in the ""$NEWDIR"" directory"
+      echo "The -r option must have a remote address after it."
+      echo " "
+      githelp; exit 1
+  fi
+
+  build
+}
+
+function build(){
+  mkdir "$NEWDIR"
+  # If manually installing, replace the text between cat and >> with a full
+  # path to your template files, surrounded by quotes. Repeat for each 
+  # template file.
+
+  if [ "$MERN" != True ]; then
+    echo "# ""$NEWDIR" >> "$NEWDIR""/"README.md
+    echo "#### Started on: $(date '+%m-%d-%Y')" >> "$NEWDIR""/"README.md
+    cat  "$BREW""/etc/chajr/readmeTemplate.txt">> "$NEWDIR""/"README.md
+  fi
+
+  if [ "$BLANK" != True ]; then
+    if [ "$MEN" != True ] && [ "$MERN" != True ]; then
+      mkdir "$NEWDIR""/"css "$NEWDIR""/"js "$NEWDIR""/"images
+      cat "$BREW""/etc/chajr/htmlTemplate.txt" >> "$NEWDIR""/"index.html
+      cat "$BREW""/etc/chajr/cssTemplate.txt" >> "$NEWDIR""/"css/main.css
+      cat "$BREW""/etc/chajr/jsTemplate.txt" >> "$NEWDIR""/"js/main.js
+    fi
+    if [ "$MEN" == True ]; then
+      mkdir "$NEWDIR""/"bin "$NEWDIR""/"config "$NEWDIR""/"controllers
+      mkdir "$NEWDIR""/"models "$NEWDIR""/"public "$NEWDIR""/"routes
+      mkdir "$NEWDIR""/"views "$NEWDIR""/"views/tktks
+      mkdir "$NEWDIR""/"views"/"partials "$NEWDIR""/"public"/"images 
+      mkdir "$NEWDIR""/"public"/"javascripts "$NEWDIR""/"public"/"stylesheets
+      cat "$BREW""/etc/chajr/node/bin/wwwTemplate.txt" >> "$NEWDIR""/"bin/www
+      cat "$BREW""/etc/chajr/node/envTemplate.txt" >> "$NEWDIR""/".env
+      cat "$BREW""/etc/chajr/node/serverTemplate.txt" >> "$NEWDIR""/"server.js
+      cat "$BREW""/etc/chajr/node/config/dbTemplate.txt" >> "$NEWDIR""/"config/database.js
+      cat "$BREW""/etc/chajr/node/controllers/controllersTemplate.txt" >> "$NEWDIR""/"controllers/tktks.js
+      cat "$BREW""/etc/chajr/node/models/modelTemplate.txt" >> "$NEWDIR""/"models/tktk.js
+      cat "$BREW""/etc/chajr/node/public/cssTemplate.txt" >> "$NEWDIR""/"public/stylesheets/main.css
+      cat "$BREW""/etc/chajr/node/routes/routesTktksTemplate.txt" >> "$NEWDIR""/"routes/tktks.js
+      cat "$BREW""/etc/chajr/node/routes/routesUsersTemplate.txt" >> "$NEWDIR""/"routes/users.js
+      cat "$BREW""/etc/chajr/node/routes/routesIndexTemplate.txt" >> "$NEWDIR""/"routes/index.js
+      cat "$BREW""/etc/chajr/node/views/viewsTktksIndexTemplate.txt" >> "$NEWDIR""/"views/tktks/index.ejs
+      cat "$BREW""/etc/chajr/node/views/viewsIndexTemplate.txt" >> "$NEWDIR""/"views/index.ejs
+      cat "$BREW""/etc/chajr/node/views/viewsErrorTemplate.txt" >> "$NEWDIR""/"views/error.ejs
+      cat "$BREW""/etc/chajr/node/packageJsonTemplate.txt" >> "$NEWDIR""/"package.json
+    fi
+    if [ "$MERN" == True ]; then
+      npx create-react-app "$NEWDIR"
+    fi
+  fi
+  if [ "$PRETTIER" == True ]; then
+    cat "$BREW""/etc/chajr/prettierTemplate.txt" >> "$NEWDIR""/".prettierrc
+  fi
+
+  check_build_success
+}
+
+function check_build_success(){
+  if [ -d "$NEWDIRPATH" ]; then
+    echo " "
+    echo "*SUCCESS!* A chajr was built in the ""$NEWDIR"" directory!"
+    echo " "
+    post_build_processes
+  else
+    echo " "
+    echo "*CRITICAL FAILURE!* Something has gone wrong. No chajr was built."
+    echo "Ensure you have write permissions in the current working directory."
+    echo " "
+    exit 1
+  fi
+}
+
+function post_build_processes(){
+  cd "$NEWDIRPATH"
+  if [ "$MERN" == True ]; then
+    npm i express morgan serve-favicon mongoose react-router-dom dotenv bcrypt jsonwebtoken
+    cd ..
+    mkdir "$NEWDIR""/"config
+    mkdir "$NEWDIR""/"controllers 
+    mkdir "$NEWDIR""/"models 
+    mkdir "$NEWDIR""/"routes
+    mkdir "$NEWDIR""/"routes/api 
+    mkdir "$NEWDIR""/"src/pages 
+    mkdir "$NEWDIR""/"src/pages/App
+    mkdir "$NEWDIR""/"src/pages/LoginPage
+    mkdir "$NEWDIR""/"src/pages/SignupPage
+    mkdir "$NEWDIR""/"src/pages/TktksSecretPage
+    mkdir "$NEWDIR""/"src/components
+    mkdir "$NEWDIR""/"src/components/NavBar
+    mkdir "$NEWDIR""/"src/components/SignupForm
+    mkdir "$NEWDIR""/"src/components/Tktk
+    mkdir "$NEWDIR""/"src/services/
+
+    cat "$BREW""/etc/chajr/mern/serverTemplate.txt" >> "$NEWDIR""/"server.js
+    cat "$BREW""/etc/chajr/mern/procfileTemplate.txt" >> "$NEWDIR""/"Procfile
+    cat "$BREW""/etc/chajr/mern/envTemplate.txt" >> "$NEWDIR""/".env
+    cat "$BREW""/etc/chajr/mern/routes/apiTktksTemplate.txt" >> "$NEWDIR""/"routes/api/tktks.js
+    cat "$BREW""/etc/chajr/mern/routes/apiUsersTemplate.txt" >> "$NEWDIR""/"routes/api/users.js
+    cat "$BREW""/etc/chajr/mern/config/dbTemplate.txt" >> "$NEWDIR""/"config/database.js
+    cat "$BREW""/etc/chajr/mern/config/authTemplate.txt" >> "$NEWDIR""/"config/auth.js
+    cat "$BREW""/etc/chajr/mern/models/tktkTemplate.txt" >> "$NEWDIR""/"models/tktk.js
+    cat "$BREW""/etc/chajr/mern/models/userTemplate.txt" >> "$NEWDIR""/"models/user.js
+    cat "$BREW""/etc/chajr/mern/controllers/tktksTemplate.txt" >> "$NEWDIR""/"controllers/tktks.js
+    cat "$BREW""/etc/chajr/mern/controllers/usersTemplate.txt" >> "$NEWDIR""/"controllers/users.js
+    cat "$BREW""/etc/chajr/mern/pages/indexTemplate.txt" > "$NEWDIR""/"src/index.js
+    cat "$BREW""/etc/chajr/mern/pages/appTemplate.txt" >> "$NEWDIR""/"src/pages/App/App.js
+    cat "$BREW""/etc/chajr/mern/pages/appCssTemplate.txt" >> "$NEWDIR""/"src/pages/App/App.css
+    cat "$BREW""/etc/chajr/mern/pages/loginTemplate.txt" >> "$NEWDIR""/"src/pages/LoginPage/LoginPage.jsx
+    cat "$BREW""/etc/chajr/mern/pages/loginCssTemplate.txt" >> "$NEWDIR""/"src/pages/LoginPage/LoginPage.css
+    cat "$BREW""/etc/chajr/mern/pages/signupTemplate.txt" >> "$NEWDIR""/"src/pages/SignupPage/SignupPage.jsx
+    cat "$BREW""/etc/chajr/mern/pages/signupCssTemplate.txt" >> "$NEWDIR""/"src/pages/SignupPage/SignupPage.css
+    cat "$BREW""/etc/chajr/mern/pages/tktkSecretTemplate.txt" >> "$NEWDIR""/"src/pages/TktksSecretPage/TktksSecretPage.jsx
+    cat "$BREW""/etc/chajr/mern/components/NavBarTemplate.txt" >> "$NEWDIR""/"src/components/NavBar/NavBar.jsx
+    cat "$BREW""/etc/chajr/mern/components/NavBarCssTemplate.txt" >> "$NEWDIR""/"src/components/NavBar/NavBar.css
+    cat "$BREW""/etc/chajr/mern/components/SigupFormTemplate.txt" >> "$NEWDIR""/"src/components/SignupForm/SignupForm.jsx
+    cat "$BREW""/etc/chajr/mern/components/TktkTemplate.txt" >> "$NEWDIR""/"src/components/Tktk/Tktk.jsx
+    cat "$BREW""/etc/chajr/mern/services/tktkApiTemplate.txt" >> "$NEWDIR""/"src/services/tktk-api.js
+    cat "$BREW""/etc/chajr/mern/services/userApiTemplate.txt" >> "$NEWDIR""/"src/services/user-api.js
+    cat "$BREW""/etc/chajr/mern/services/tokenTemplate.txt" >> "$NEWDIR""/"src/services/tokenService.js
+
+    rm "$NEWDIR"/src/App.js
+    rm "$NEWDIR"/src/App.css
+    rm "$NEWDIR"/src/App.test.js
+    rm "$NEWDIR"/src/setupTests.js
+    rm "$NEWDIR"/src/logo.svg
+
+    sed -i '' '$d' "$NEWDIR""/"package.json
+    sed -i '' '$d' "$NEWDIR""/"package.json
+    cat "$BREW""/etc/chajr/mern/packageJsonExtension.txt" >> "$NEWDIR""/"package.json
+
+    echo "# ""$NEWDIR" >> "$NEWDIR""/"README.md
+    echo "#### Started on: $(date '+%m-%d-%Y')" >> "$NEWDIR""/"README.md
+    cat  "$BREW""/etc/chajr/readmeTemplate.txt">> "$NEWDIR""/"README.md
+
+    cd "$NEWDIRPATH"
+    npm run build
+
+    if [ "$REMOTE" == True ]; then
+      cd "$NEWDIRPATH"
+      git add .
+      git commit -m "first commit"
+      git remote add origin "$REMOTEADDRESS"
+      git push -u origin master
+    fi
+  else
+    if [ "$REMOTE" == True ]; then
+      git init
+      git add .
+      git commit -m "first commit"
+      git remote add origin "$REMOTEADDRESS"
+      git push -u origin master
+    fi
+    if [ "$LOCAL" == True ]; then
+      git init
+      git add .
+      git commit -m "first commit"
+    fi
+  fi
+  
+  # init npm AFTER adding remotes to include remotes in package.json
+  if [ "$MEN" == True ]; then
+    npm init --yes
+    npm i
+  fi
+  if [ "$PRETTIER" = True ]; then
+    npm i --save-exact --save-dev prettier
+  fi
+  if [ "$EDITOR" == True ]; then
+    open -a "Visual Studio Code" .
+  fi
+  exit 0
+}
+
+function help(){
+  echo " "
+  echo "Usage: chajr [-e] [-h] [-p] [-v] [-b | -m | -n ]"
+  echo "             [-l | -r <remote-repository-path>]"
+  echo "             <dirtocreate>"
+  echo " "
+  echo "Options:"
+  echo " "
+  echo "  -b"
+  echo "      Creates the directory specified with only a README.md file"
+  echo "      inside of it. Cannot be used with the -m or -n option."
+  echo " "
+  echo "  -e"
+  echo "      Opens the new directory in Visual Studio Code."
+  echo " "
+  echo "  -h"
+  echo "      Access the help dialog you're currently reading."
+  echo " "
+  echo "  -l"
+  echo "      Cannot be used simultaneously with the -r option. Creates a"
+  echo "      local git repository inside the new directory, and makes an"
+  echo "      initial commit."
+  echo " "
+  echo "  -m"
+  echo "      Builds a MERN (MongoDB, Express, React, and Node.js) stack"
+  echo "      chajr. Cannot be used with the -b or -n option"
+  echo " "
+  echo "  -n"
+  echo "      Builds a Node.js, Express, and MongoDB ready chajr. Cannot be"
+  echo "      used with the -b or the -m option"
+  echo " "
+  echo "  -p"
+  echo "      Adds a .prettierrc configuration file in the project directory."
+  echo " "
+  echo "  -r <remote-repository-path>"
+  echo "      Cannot be used simultaneously with the -l option. Creates a"
+  echo "      local git repository inside the new directory, makes an initial"
+  echo "      commit, and pushes to the provided remote repository path."
+  echo " "
+  echo "  -v"
+  echo "      Shows current version info and what is included in its release."
+  echo " "
+  echo "Example usage:"
+  echo " "
+  echo "  chajr -nper https://github.com/exampleUser/exampleSite.git example"
+  echo " "
+  echo "    This command creates a new directory called example in the working"
+  echo "    directory. Inside this directory, a Node/Express/MongoDB file"
+  echo "    structure will be built, and a Prettier configuration file added."
+  echo "    A local git repo will be created, and an initial commit will be"
+  echo "    made to the provided github.com repo. Finally, the newly created" 
+  echo "    project will be opened in Visual Studio Code."
+  echo " "
+  echo "  chajr -b -e -l exampleTwo"
+  echo " "
+  echo "    This command creates a new directory called exampleTwo in the"
+  echo "    working directory. Inside this directory a README.md is created,"
+  echo "    along with a local git repository. The exampleTwo directory is"
+  echo "    then opened in Visual Stuio Code"
+  echo " "
+}
+
+function githelp(){
+  echo "Git Options:"
+  echo "Use the -l option to set up a local git repository and make an"
+  echo "initial commit to it. Cannot be used with the -r option."
+  echo " "
+  echo "Use -r option to set up a local git repository, make an initial commit"
+  echo "to it, and push to a remote repository. When using this option, a valid"
+  echo "remote repository must be provided. Visit this wiki page for help:"
+  echo "https://github.com/DavidStinson/chajr/wiki/Using-a-Remote-Repository"
+  echo "Cannot be used with the -l option."
+  echo " "
+}
+
+main $@
